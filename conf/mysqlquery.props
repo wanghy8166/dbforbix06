@@ -1,0 +1,7 @@
+DefaultQueryPeriod=1
+
+QueryList=Uptime
+
+Uptime.Query=SHOW GLOBAL STATUS WHERE Variable_name = 'Uptime'
+Uptime.ExcludeColumnsList=1
+

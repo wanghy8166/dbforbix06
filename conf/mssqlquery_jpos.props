@@ -1,0 +1,7 @@
+DefaultQueryPeriod=1
+
+QueryList=start_minute,JPOSWARNINGLIST
+
+start_minute.Query=select datediff(minute,crdate,getdate()) as start_minute from master..sysdatabases where name='tempdb' 
+
+JPOSWARNINGLIST.Query=select count(1) from JPOSWARNINGLIST(nolock)

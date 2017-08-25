@@ -1,0 +1,8 @@
+DefaultQueryPeriod=1
+
+QueryList=Uptime,rbqz_job_instance
+
+Uptime.Query=SHOW GLOBAL STATUS WHERE Variable_name = 'Uptime'
+Uptime.ExcludeColumnsList=1
+
+rbqz_job_instance.Query=select case when str_to_date(date_format(r.finished_at, '%Y%m%d')+' 06:00:00','%Y-%m-%d %H:%i:%s') > now()  then 0   when count(1) >  0 then 0  else  1  end from pdsa_log.rbqz_job_instance r where r.job_name ='AutoPo InitPool Job' and r.fresult='completed' and r.finished_at > curdate() 

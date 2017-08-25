@@ -1,0 +1,12 @@
+DefaultQueryPeriod=1
+
+QueryList=Uptime,CTaskPending_fail,CTaskPending_submitTime
+
+Uptime.Query=SHOW GLOBAL STATUS WHERE Variable_name = 'Uptime'
+Uptime.ExcludeColumnsList=1
+
+CTaskPending_fail.Query=select ifnull(sum(failureCount),0) from hdpos.CTaskPending where groupid != 'notify' 
+
+CTaskPending_submitTime.Query=select ifnull(TIMESTAMPDIFF(MINUTE,min(submitTime),now()),0) from hdpos.CTaskPending where groupid != 'notify'
+
+ 

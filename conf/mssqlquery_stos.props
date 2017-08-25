@@ -1,0 +1,23 @@
+DefaultQueryPeriod=1
+
+QueryList=ctaskpending,ctaskpending_cnt,h3stkout_stos_diff,h3stkout0_stos1,h3stkout1_stos0,pspdsbillplantargetdtl,start_minute,rfExportLog,ctaskfailure,ctaskfailure_error
+
+ctaskpending.Query=select count(1) from ctaskpending (nolock) where failurecount > 0 
+
+ctaskpending_cnt.Query=select count(1) from ctaskpending (nolock) 
+
+h3stkout_stos_diff.Query=select cnt from v_stkout_stos_diff
+
+h3stkout0_stos1.Query=select count(1) from wso w (nolock) where not exists (select 1 from stkout st (nolock) where  w.billnumber =st.pdsbillnumber) and w.createtime > getdate() - 2 
+
+h3stkout1_stos0.Query=select count(1) from stkout st (nolock) where not exists (select 1 from wso w (nolock)  where w.billnumber =st.pdsbillnumber) and st.stat = 1 and st.fildate > getdate() - 2 
+
+pspdsbillplantargetdtl.Query=select count(1) from PSPDSBILLPLANTARGETDTL(nolock) where proflag in(0,2) 
+
+start_minute.Query=select datediff(minute,crdate,getdate()) as start_minute from master..sysdatabases where name='tempdb' 
+
+rfExportLog.Query=select case when convert(datetime, convert(varchar(10), getdate(), 120) + ' 07:00:00',101) > getdate() then 0 when count(1) > 0 then 0 else 1 end from rfExportLog where ExportTime > convert(date, getdate(), 6) and convert(date, getdate() + 1, 6) > ExportTime  
+
+ctaskfailure.Query=select cnt from v_no_repeat_ctaskfailure
+
+ctaskfailure_error.Query=select cnt from v_repeat_ctaskfailure
